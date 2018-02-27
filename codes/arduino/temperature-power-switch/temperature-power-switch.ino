@@ -4,6 +4,8 @@
 
 #include <EEPROM.h>
 
+const int debug = 1;
+
 const int uid_address = 0;
 const uint64_t w_pipe = 0x0606060606;
 const uint64_t r_pipe = 0x0707070707;
@@ -39,38 +41,53 @@ void setup()
   
 
   radio.begin();
-  radio.openWritingPipe(w_pipe);
   radio.openReadingPipe(0, r_pipe);
-  radio.setChannel(0x60);
+  radio.openWritingPipe(w_pipe);
+  radio.setAutoAck(false);
   radio.setPALevel(RF24_PA_MIN);
+  
   radio.startListening();
+
+  if (EEPROM.read(0) == 'C')
+    initialize_config();
 }
 
+void initialize_config() {
+  char command[3];
+  strcpy(command, "G:_");
+  send_radio(command);
+}
 
 void send_radio(char text[]) {
   if (strcmp(uid, "0000000") == 0){
     return;
   }
 
+  if (debug == 1)
+    Serial.println("Sending radio message");
   
-  Serial.println("Sending radio message");
 
   char package[32];
   strcpy(package, uid);
   strcat(package, ":");
   strcat(package, text);
 
+  if (debug == 1)
+    Serial.println(package);
+
   radio.stopListening();
-  radio.write(package, 32);
+  radio.write(package, 32, 0);
   radio.startListening();
 }
 
 void requestId() {
-  Serial.println("Requesting Id");
+  if (debug == 1)
+    Serial.println("Requesting Id");
+    
   radio.stopListening();
   char request[] = "I";
 
-  radio.write(&request, 1);
+  radio.write(&request, 1, 0);
 
   radio.startListening();
   
@@ -86,6 +103,7 @@ void set_info(char* info) {
         }
 
         EEPROM.put(uid_address, uid);
+        initialize_config();
         break;
     case 'M':
         info++;
@@ -195,6 +213,11 @@ void automatic_mode() {
 }
 
 void process_radio_message(char* message) {
+    if (debug == 1) {
+      Serial.println("Received radio message: ");
+      Serial.println(message);
+    }
+      
     for (int i=0; i < 7; i++){
         if (uid[i] != message[i]){
           return;
@@ -202,11 +225,7 @@ void process_radio_message(char* message) {
     }
 
     char* command = message + 8;
-
     if (command[0] == 'S') {
-        printf("command: ");
-        printf(command);
-        printf("\n");
         set_info(command);
     }
 }
@@ -217,7 +236,10 @@ void loop()
     requestId();  
   }
 
-  if (radio.available()) {
+  while (radio.available()) {
+    if (debug==1){
+      Serial.println("radio available");
+    }
     char radio_info[32];
     radio.read(&radio_info, 32);
     
