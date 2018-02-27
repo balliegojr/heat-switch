@@ -1,0 +1,3 @@
+[submodule "codes/raspberry/transport/lib_nrf24"]
+	path = codes/raspberry/transport/lib_nrf24
+	url = https://github.com/Blavery/lib_nrf24
