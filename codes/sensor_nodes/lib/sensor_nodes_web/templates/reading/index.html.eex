@@ -1,0 +1,30 @@
+<h2>Listing Readings</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Sensor uid</th>
+      <th>Type</th>
+      <th>Value</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for reading <- @readings do %>
+    <tr>
+      <td><%= reading.sensor_uid %></td>
+      <td><%= reading.type %></td>
+      <td><%= reading.value %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: reading_path(@conn, :show, reading), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: reading_path(@conn, :edit, reading), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: reading_path(@conn, :delete, reading), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+

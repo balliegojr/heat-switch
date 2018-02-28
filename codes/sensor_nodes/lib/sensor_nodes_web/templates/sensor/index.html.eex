@@ -1,0 +1,32 @@
+<h2>Listing Sensors</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Sensor uid</th>
+      <th>Op mode</th>
+      <th>Relay status</th>
+      <th>Upper</th>
+      <th>Lower</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sensor <- @sensors do %>
+    <tr>
+      <td><%= sensor.sensor_uid %></td>
+      <td><%= sensor.op_mode %></td>
+      <td><%= sensor.relay_status %></td>
+      <td><%= sensor.upper %></td>
+      <td><%= sensor.lower %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: sensor_path(@conn, :show, sensor), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: sensor_path(@conn, :delete, sensor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

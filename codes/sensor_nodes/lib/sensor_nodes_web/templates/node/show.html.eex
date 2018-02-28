@@ -1,0 +1,13 @@
+<h2>Show Node</h2>
+
+<ul>
+
+  <li>
+    <strong>Node uid:</strong>
+    <%= @node.node_uid %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: node_path(@conn, :edit, @node) %></span>
+<span><%= link "Back", to: node_path(@conn, :index) %></span>

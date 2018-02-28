@@ -1,0 +1,33 @@
+<h2>Show Sensor</h2>
+
+<ul>
+
+  <li>
+    <strong>Sensor uid:</strong>
+    <%= @sensor.sensor_uid %>
+  </li>
+
+  <li>
+    <strong>Op mode:</strong>
+    <%= @sensor.op_mode %>
+  </li>
+
+  <li>
+    <strong>Relay status:</strong>
+    <%= @sensor.relay_status %>
+  </li>
+
+  <li>
+    <strong>Upper:</strong>
+    <%= @sensor.upper %>
+  </li>
+
+  <li>
+    <strong>Lower:</strong>
+    <%= @sensor.lower %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: sensor_path(@conn, :edit, @sensor) %></span>
+<span><%= link "Back", to: sensor_path(@conn, :index) %></span>
