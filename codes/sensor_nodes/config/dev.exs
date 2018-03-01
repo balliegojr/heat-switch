@@ -56,3 +56,8 @@ config :sensor_nodes, SensorNodes.Repo,
   database: "sensor_nodes_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :sensor_nodes, SensorNodes.Mqtt,
+   host: "iot.eclipse.org",
+   port: 1883,
+   client_id: ""

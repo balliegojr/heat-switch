@@ -14,6 +14,7 @@ defmodule SensorNodes.Application do
       supervisor(SensorNodesWeb.Endpoint, []),
       # Start your own worker by calling: SensorNodes.Worker.start_link(arg1, arg2, arg3)
       # worker(SensorNodes.Worker, [arg1, arg2, arg3]),
+      worker(SensorNodes.Mqtt, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

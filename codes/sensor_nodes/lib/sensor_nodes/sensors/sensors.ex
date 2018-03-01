@@ -37,6 +37,10 @@ defmodule SensorNodes.Sensors do
   """
   def get_node!(id), do: Repo.get!(Node, id)
 
+  def get_node_by_uid(uid) do
+    Repo.get_by(Node, node_uid: uid)
+  end
+
   @doc """
   Creates a node.
 
@@ -133,6 +137,9 @@ defmodule SensorNodes.Sensors do
   """
   def get_sensor!(id), do: Repo.get!(Sensor, id)
 
+  def get_sensor_by_uid(uid) do
+    Repo.get_by(Sensor, sensor_uid: uid)
+  end
   @doc """
   Creates a sensor.
 
@@ -210,7 +217,7 @@ defmodule SensorNodes.Sensors do
 
   """
   def list_readings do
-    Repo.all(Reading)
+    Repo.all(from reading in Reading, order_by: [desc: :inserted_at])
   end
 
   @doc """
@@ -245,6 +252,69 @@ defmodule SensorNodes.Sensors do
     %Reading{}
     |> Reading.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_reading(node_id, _sensor_id, "id", reading) do
+    # register new sensor
+    case get_node_by_uid(node_id) do
+        {:ok, node} ->
+            info = Map.new Enum.map String.split(reading, ";"), fn(item) -> 
+                [key, value] = String.split(item, ":")
+                {key, value}
+            end
+        
+            sensor_info = %{
+                :lower => info["lower"],
+                :op_mode => info["op_mode"],
+                :relay_status => false,
+                :sensor_uid => info["id"],
+                :upper => :info["upper"],
+                :user_id => node.user_id,
+                :node_id => node.id
+            }
+            
+            create_sensor(sensor_info)
+    end
+    
+  end
+
+  def create_reading(node_id, sensor_id, type, reading) do
+    
+    sensor_data = case get_sensor_by_uid(sensor_id) do
+        sensor -> sensor
+        nil -> 
+            case get_node_by_uid(node_id) do
+                node -> 
+                    sensor_info = %{
+                        :user_id => node.user_id,
+                        :node_id => node.id,
+                        :sensor_uid => sensor_id,
+                        :upper => 32,
+                        :lower => 28,
+                        :op_mode => "A"
+                    }
+
+                    create_sensor(sensor_info)
+                nil -> nil
+            end
+    end
+
+    case sensor_data do
+        sensor ->
+            reading_info = %{
+                :sensor_uid => sensor_id,
+                :type => type,
+                :value => reading,
+                :user_id => sensor.user_id,
+                :sensor_id => sensor.id
+            }
+
+            create_reading(reading_info)
+        nil -> { :error }
+    end
+
+
+    
   end
 
   @doc """

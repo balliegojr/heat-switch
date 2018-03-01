@@ -19,7 +19,7 @@ defmodule SensorNodes.Sensors.Sensor do
   @doc false
   def changeset(%Sensor{} = sensor, attrs) do
     sensor
-    |> cast(attrs, [:sensor_uid, :op_mode, :relay_status, :upper, :lower])
-    |> validate_required([:sensor_uid, :op_mode, :relay_status, :upper, :lower])
+    |> cast(attrs, [:sensor_uid, :op_mode, :relay_status, :upper, :lower, :node_id])
+    |> validate_required([:sensor_uid, :op_mode, :relay_status, :upper, :lower, :node_id])
   end
 end

@@ -21,7 +21,7 @@ void setup()
   radio.begin();
   radio.openReadingPipe(0, r_pipe);
   radio.openWritingPipe(w_pipe);
-  radio.setPALevel(RF24_PA_MAX);
+  radio.setPALevel(RF24_PA_MIN);
   radio.startListening();
   
   Serial.println("DEBUG: Board available");
@@ -37,7 +37,7 @@ void loop()
   Serial.flush();
  }
 
- while (Serial.available()){
+ if (Serial.available()){
   
   char serial_info[32];
   Serial.readBytes(serial_info, 32);
