@@ -1,41 +1,47 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+      <p>Oops, alguma coisa errada não está certa.</p>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= label f, :sensor_uid, class: "control-label" %>
-    <%= text_input f, :sensor_uid, class: "form-control" %>
+    <%= label f, "Id do sensor", class: "control-label" %>
+    <%= text_input f, :sensor_uid, class: "form-control", readonly: true %>
     <%= error_tag f, :sensor_uid %>
   </div>
 
   <div class="form-group">
-    <%= label f, :op_mode, class: "control-label" %>
-    <%= text_input f, :op_mode, class: "form-control" %>
+    <%= label f, "Nome", class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, "Modo operacional", class: "control-label" %>
+    <%= select f, :op_mode, [ "Automatico": "A", "Manual": "O", "Report": "R" ], class: "form-control" %>
     <%= error_tag f, :op_mode %>
   </div>
 
   <div class="form-group">
-    <%= label f, :relay_status, class: "control-label" %>
+    <%= label f, "Status do relay", class: "control-label" %>
     <%= checkbox f, :relay_status, class: "checkbox" %>
     <%= error_tag f, :relay_status %>
   </div>
 
   <div class="form-group">
-    <%= label f, :upper, class: "control-label" %>
+    <%= label f, "Limite superior", class: "control-label" %>
     <%= number_input f, :upper, step: "any", class: "form-control" %>
     <%= error_tag f, :upper %>
   </div>
 
   <div class="form-group">
-    <%= label f, :lower, class: "control-label" %>
+    <%= label f, "Limite inferior", class: "control-label" %>
     <%= number_input f, :lower, step: "any", class: "form-control" %>
     <%= error_tag f, :lower %>
   </div>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+    <%= submit "Salvar", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -5,6 +5,7 @@ defmodule SensorNodes.Repo.Migrations.CreateSensors do
     create table(:sensors) do
       add :sensor_uid, :string
       add :op_mode, :string
+      add :name, :string
       add :relay_status, :boolean, default: false, null: false
       add :upper, :float
       add :lower, :float

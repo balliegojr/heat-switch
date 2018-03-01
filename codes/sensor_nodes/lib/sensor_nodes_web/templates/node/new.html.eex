@@ -1,5 +1,5 @@
-<h2>New Node</h2>
+<h2>Novo nó</h2>
 
 <%= render "form.html", Map.put(assigns, :action, node_path(@conn, :create)) %>
 
-<span><%= link "Back", to: node_path(@conn, :index) %></span>
+<span><%= link "Voltar", to: node_path(@conn, :index) %></span>

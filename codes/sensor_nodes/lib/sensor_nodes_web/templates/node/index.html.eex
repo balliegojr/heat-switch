@@ -1,26 +1,38 @@
-<h2>Listing Nodes</h2>
+<h2>Nós cadastrados</h2>
+<div class="row">
+  <div class="col-md-12">
+    <span>Aqui você pode cadastrar novos nós ou excluir um nó existente</span>
+  </div>
+</div>
+<hr />
+
+<div class="row">
+  <div class="col-md-12">
+    <span>Dica: Para recuperar o id de um nó, execute o comando <strong>python3 sensornode.py --id</strong> no seu raspberry</span>
+  </div>
+</div>
 
 <table class="table">
   <thead>
     <tr>
-      <th>Node uid</th>
-
-      <th></th>
+      <th>Nome</th>
+      <th>Identificação do nó</th>
+      <th class="text-right"><span><%= link "Novo", to: node_path(@conn, :new) %></span></th>
     </tr>
   </thead>
   <tbody>
 <%= for node <- @nodes do %>
     <tr>
+      <td><%= node.name %></td>
       <td><%= node.node_uid %></td>
 
       <td class="text-right">
-        <span><%= link "Show", to: node_path(@conn, :show, node), class: "btn btn-default btn-xs" %></span>
         <span><%= link "Edit", to: node_path(@conn, :edit, node), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: node_path(@conn, :delete, node), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <span><%= link "Delete", to: node_path(@conn, :delete, node), method: :delete, data: [confirm: "Você tem certeza?"], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<span><%= link "New Node", to: node_path(@conn, :new) %></span>
+

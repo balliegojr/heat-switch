@@ -18,7 +18,7 @@ defmodule SensorNodesWeb.SensorController do
     case Sensors.create_sensor(sensor_params) do
       {:ok, sensor} ->
         conn
-        |> put_flash(:info, "Sensor created successfully.")
+        |> put_flash(:info, "Sensor criado com sucesso.")
         |> redirect(to: sensor_path(conn, :show, sensor))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -42,7 +42,7 @@ defmodule SensorNodesWeb.SensorController do
     case Sensors.update_sensor(sensor, sensor_params) do
       {:ok, sensor} ->
         conn
-        |> put_flash(:info, "Sensor updated successfully.")
+        |> put_flash(:info, "Sensor atualizado com sucesso.")
         |> redirect(to: sensor_path(conn, :show, sensor))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", sensor: sensor, changeset: changeset)
@@ -54,7 +54,7 @@ defmodule SensorNodesWeb.SensorController do
     {:ok, _sensor} = Sensors.delete_sensor(sensor)
 
     conn
-    |> put_flash(:info, "Sensor deleted successfully.")
+    |> put_flash(:info, "Sensor excluido com sucesso.")
     |> redirect(to: sensor_path(conn, :index))
   end
 end

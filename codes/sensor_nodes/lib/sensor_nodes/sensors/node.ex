@@ -6,6 +6,7 @@ defmodule SensorNodes.Sensors.Node do
 
   schema "nodes" do
     field :node_uid, :string
+    field :name, :string
     field :user_id, :id
 
     timestamps()
@@ -14,7 +15,7 @@ defmodule SensorNodes.Sensors.Node do
   @doc false
   def changeset(%Node{} = node, attrs) do
     node
-    |> cast(attrs, [:node_uid])
+    |> cast(attrs, [:node_uid, :name])
     |> validate_required([:node_uid])
   end
 end

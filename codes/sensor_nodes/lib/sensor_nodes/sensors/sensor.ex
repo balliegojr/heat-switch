@@ -7,6 +7,7 @@ defmodule SensorNodes.Sensors.Sensor do
   schema "sensors" do
     field :lower, :float
     field :op_mode, :string
+    field :name, :string
     field :relay_status, :boolean, default: false
     field :sensor_uid, :string
     field :upper, :float
@@ -19,7 +20,7 @@ defmodule SensorNodes.Sensors.Sensor do
   @doc false
   def changeset(%Sensor{} = sensor, attrs) do
     sensor
-    |> cast(attrs, [:sensor_uid, :op_mode, :relay_status, :upper, :lower, :node_id])
+    |> cast(attrs, [:sensor_uid, :op_mode, :relay_status, :upper, :lower, :node_id, :name])
     |> validate_required([:sensor_uid, :op_mode, :relay_status, :upper, :lower, :node_id])
   end
 end

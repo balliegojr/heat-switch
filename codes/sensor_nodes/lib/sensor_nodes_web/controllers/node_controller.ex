@@ -18,16 +18,11 @@ defmodule SensorNodesWeb.NodeController do
     case Sensors.create_node(node_params) do
       {:ok, node} ->
         conn
-        |> put_flash(:info, "Node created successfully.")
-        |> redirect(to: node_path(conn, :show, node))
+        |> put_flash(:info, "Nó criado com sucesso.")
+        |> redirect(to: node_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
-  end
-
-  def show(conn, %{"id" => id}) do
-    node = Sensors.get_node!(id)
-    render(conn, "show.html", node: node)
   end
 
   def edit(conn, %{"id" => id}) do
@@ -42,8 +37,8 @@ defmodule SensorNodesWeb.NodeController do
     case Sensors.update_node(node, node_params) do
       {:ok, node} ->
         conn
-        |> put_flash(:info, "Node updated successfully.")
-        |> redirect(to: node_path(conn, :show, node))
+        |> put_flash(:info, "Nó atualizado com sucesso.")
+        |> redirect(to: node_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", node: node, changeset: changeset)
     end
@@ -54,7 +49,7 @@ defmodule SensorNodesWeb.NodeController do
     {:ok, _node} = Sensors.delete_node(node)
 
     conn
-    |> put_flash(:info, "Node deleted successfully.")
+    |> put_flash(:info, "Nó excluido com sucesso.")
     |> redirect(to: node_path(conn, :index))
   end
 end

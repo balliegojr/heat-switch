@@ -3,6 +3,7 @@ import serial
 import random
 import os
 import time
+import sys
 from uuid import getnode as get_mac
 from peewee import SqliteDatabase, Model, DoesNotExist, JOIN, \
     PrimaryKeyField, FloatField, CharField, BooleanField
@@ -91,7 +92,7 @@ def process_content(content):
         _sensor_uid = generate_sensor_uid()
         payload = ('0000000:SI' + _sensor_uid)
         comm.write(payload)
-        client.publish(f"{topic_base}/node/{node_id}/sensor/{uid}/id", _sensor_uid)
+        client.publish(f"{topic_base}/node/{node_id}/sensor/{uid}/id", f"id:{_sensor_uid};op_mode:A;lower:28.0;upper:32.0;status:0")
         create_sensor_info(_sensor_uid)
     elif 'G' in command:
         send_sensor_info(uid)
@@ -124,9 +125,6 @@ def on_message(client, userdata, message):
                 comm.write(f"{sensor_id}:SMA:{f_upper}:{f_lower}")
                 set_sensor_options(sensor_id, 'A', relay_status=False, lower_boundary=float(f_lower), upper_boundary=float(f_upper))
 
-
-        print(f"Sensor: {sensor_id}, Message: {topic}, Value: {value}")
-
 def send_sensor_info(uid):
     try:
         config = SensorConfig.get(SensorConfig.node_id == uid)
@@ -151,6 +149,11 @@ if __name__ == '__main__':
     init()
 
     node_id = get_node_id()
+
+    if '--id' in sys.argv:
+        print(node_id)
+        exit()
+
 
     client = mqtt.Client("P1") #create new instance
     client.connect(broker_address) #connect to broker

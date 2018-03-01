@@ -14,12 +14,21 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
+        
+        <%# <span class="logo"></span> %>
+
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li><%= link "Nós", to: node_path(@conn, :index) %></li>
+                <li><%= link "Sensores", to: sensor_path(@conn, :index) %></li>
+                <li><%= link "Leituras", to: reading_path(@conn, :index) %></li>
+              </ul>
+            </div>
+          </div>
         </nav>
-        <span class="logo"></span>
+
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

@@ -174,6 +174,7 @@ defmodule SensorNodes.Sensors do
     sensor
     |> Sensor.changeset(attrs)
     |> Repo.update()
+    |> trigger_mqtt_commands()
   end
 
   @doc """
@@ -254,113 +255,99 @@ defmodule SensorNodes.Sensors do
     |> Repo.insert()
   end
 
-  def create_reading(node_id, _sensor_id, "id", reading) do
-    # register new sensor
-    case get_node_by_uid(node_id) do
-        {:ok, node} ->
-            info = Map.new Enum.map String.split(reading, ";"), fn(item) -> 
-                [key, value] = String.split(item, ":")
-                {key, value}
-            end
-        
+
+  defp get_sensor_or_create(sensor_uid, node_uid) do
+    sensor = get_sensor_by_uid(sensor_uid)
+    if sensor == nil do
+        node = get_node_by_uid(node_uid)
+
+        if node != nil do
             sensor_info = %{
-                :lower => info["lower"],
-                :op_mode => info["op_mode"],
-                :relay_status => false,
-                :sensor_uid => info["id"],
-                :upper => :info["upper"],
                 :user_id => node.user_id,
-                :node_id => node.id
+                :node_id => node.id,
+                :sensor_uid => sensor_uid,
+                :upper => 32,
+                :lower => 28,
+                :op_mode => "A"
             }
-            
-            create_sensor(sensor_info)
+
+            sensor = create_sensor(sensor_info)
+        end
     end
+        
+    sensor
+  end
+
+
+  def create_reading(node_id, _sensor_id, "id", reading) do
+    node = get_node_by_uid(node_id)
+    if node != nil do
+        info = Map.new Enum.map String.split(reading, ";"), fn(item) -> 
+            [key, value] = String.split(item, ":")
+            {key, value}
+        end
     
+        sensor_info = %{
+            :lower => info["lower"],
+            :op_mode => info["op_mode"],
+            :relay_status => false,
+            :sensor_uid => info["id"],
+            :upper => :info["upper"],
+            :user_id => node.user_id,
+            :node_id => node.id
+        }
+        
+        create_sensor(sensor_info)
+    end
+  end
+
+  def create_reading(node_id, sensor_id, "relay", reading) do
+    sensor = get_sensor_or_create(sensor_id, node_id)
+    if sensor.op_mode != "O" do
+        changeset = case String.replace(reading, "\r\n", "") do
+            "on" -> Sensor.changeset(sensor, %{ :relay_status => true })
+            "off" -> Sensor.changeset(sensor, %{ :relay_status => false })
+        end
+
+        Repo.update(changeset)
+        reading_info = %{
+            :sensor_uid => sensor_id,
+            :type => "relay",
+            :value => reading,
+            :user_id => sensor.user_id,
+            :sensor_id => sensor.id
+        }
+
+        create_reading(reading_info)    
+    end
   end
 
   def create_reading(node_id, sensor_id, type, reading) do
-    
-    sensor_data = case get_sensor_by_uid(sensor_id) do
-        sensor -> sensor
-        nil -> 
-            case get_node_by_uid(node_id) do
-                node -> 
-                    sensor_info = %{
-                        :user_id => node.user_id,
-                        :node_id => node.id,
-                        :sensor_uid => sensor_id,
-                        :upper => 32,
-                        :lower => 28,
-                        :op_mode => "A"
-                    }
+    sensor = get_sensor_or_create(sensor_id, node_id)
+    if sensor != nil do
+        reading_info = %{
+            :sensor_uid => sensor_id,
+            :type => type,
+            :value => reading,
+            :user_id => sensor.user_id,
+            :sensor_id => sensor.id
+        }
 
-                    create_sensor(sensor_info)
-                nil -> nil
-            end
+        create_reading(reading_info)
     end
+  end
 
-    case sensor_data do
-        sensor ->
-            reading_info = %{
-                :sensor_uid => sensor_id,
-                :type => type,
-                :value => reading,
-                :user_id => sensor.user_id,
-                :sensor_id => sensor.id
-            }
+  def trigger_mqtt_commands({:ok, sensor}) do
+    spawn(fn -> 
+        SensorNodes.Mqtt.send_message(
+        get_node!(sensor.node_id).node_uid, 
+        sensor.sensor_uid, 
+        sensor.op_mode, 
+        %{ :relay_status => sensor.relay_status, :upper => sensor.upper, :lower => sensor.lower })
+        
+    end)
 
-            create_reading(reading_info)
-        nil -> { :error }
-    end
-
-
+    {:ok, sensor}
     
-  end
-
-  @doc """
-  Updates a reading.
-
-  ## Examples
-
-      iex> update_reading(reading, %{field: new_value})
-      {:ok, %Reading{}}
-
-      iex> update_reading(reading, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_reading(%Reading{} = reading, attrs) do
-    reading
-    |> Reading.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Reading.
-
-  ## Examples
-
-      iex> delete_reading(reading)
-      {:ok, %Reading{}}
-
-      iex> delete_reading(reading)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_reading(%Reading{} = reading) do
-    Repo.delete(reading)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking reading changes.
-
-  ## Examples
-
-      iex> change_reading(reading)
-      %Ecto.Changeset{source: %Reading{}}
-
-  """
-  def change_reading(%Reading{} = reading) do
-    Reading.changeset(reading, %{})
   end
 end

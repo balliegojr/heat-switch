@@ -1,13 +1,14 @@
-<h2>Listing Sensors</h2>
-
+<h2>Sensores</h2>
+<span>Os sensores são cadastrados automaticamente, quando ativados. É possivel atribuir um nome ou mudar o modo de operação.
 <table class="table">
   <thead>
     <tr>
-      <th>Sensor uid</th>
-      <th>Op mode</th>
-      <th>Relay status</th>
-      <th>Upper</th>
-      <th>Lower</th>
+      <th>Nome</th>
+      <th>Identificação</th>
+      <th>Modo</th>
+      <th>Status</th>
+      <th>Limite superior</th>
+      <th>Limite inferior</th>
 
       <th></th>
     </tr>
@@ -15,16 +16,24 @@
   <tbody>
 <%= for sensor <- @sensors do %>
     <tr>
+      <td><%= sensor.name %></td>
       <td><%= sensor.sensor_uid %></td>
-      <td><%= sensor.op_mode %></td>
-      <td><%= sensor.relay_status %></td>
+
+      <td>
+        <%= 
+          case sensor.op_mode do
+            "A" -> "Automático"
+            "R" -> "Apenas leitura"
+            "O" -> "Override"
+          end
+        %>
+        </td>
+      <td><%= if sensor.relay_status, do: "Ligado", else: "Desligado" %></td>
       <td><%= sensor.upper %></td>
       <td><%= sensor.lower %></td>
 
       <td class="text-right">
-        <span><%= link "Show", to: sensor_path(@conn, :show, sensor), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: sensor_path(@conn, :delete, sensor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <span><%= link "Editar", to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
       </td>
     </tr>
 <% end %>

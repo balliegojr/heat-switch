@@ -1,5 +1,5 @@
-<h2>Edit Sensor</h2>
+<h2>Editar Sensor</h2>
 
 <%= render "form.html", Map.put(assigns, :action, sensor_path(@conn, :update, @sensor)) %>
 
-<span><%= link "Back", to: sensor_path(@conn, :index) %></span>
+<span><%= link "Voltar", to: sensor_path(@conn, :index) %></span>
