@@ -27,8 +27,10 @@
       <td><%= node.node_uid %></td>
 
       <td class="text-right">
-        <span><%= link "Edit", to: node_path(@conn, :edit, node), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: node_path(@conn, :delete, node), method: :delete, data: [confirm: "Você tem certeza?"], class: "btn btn-danger btn-xs" %></span>
+        <span><%= link "Exibir sensores", to: node_sensor_path(@conn, :filter_by_node, node), class: "btn btn-info btn-xs" %></span>
+        <span><%= link "Exibir leituras", to: node_reading_path(@conn, :filter_by_node, node), class: "btn btn-warning btn-xs" %></span>
+        <span><%= link "Editar", to: node_path(@conn, :edit, node), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Excluir", to: node_path(@conn, :delete, node), method: :delete, data: [confirm: "Você tem certeza?"], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
 <% end %>

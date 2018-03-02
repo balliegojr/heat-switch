@@ -121,6 +121,10 @@ defmodule SensorNodes.Sensors do
     Repo.all(Sensor)
   end
 
+  def list_sensors_by_node (node_id) do 
+    Repo.all(from sensor in Sensor, where: sensor.node_id == ^node_id )
+  end
+
   @doc """
   Gets a single sensor.
 
@@ -219,6 +223,18 @@ defmodule SensorNodes.Sensors do
   """
   def list_readings do
     Repo.all(from reading in Reading, order_by: [desc: :inserted_at])
+  end
+
+  def list_readings_by_sensor(sensor_id) do
+    Repo.all(from reading in Reading, where: reading.sensor_id == ^sensor_id, order_by: [desc: :inserted_at])
+  end
+
+  def list_readings_by_node(node_id) do
+    query = from reading in Reading, 
+      join: sensor in Sensor,
+      where: sensor.id == reading.sensor_id and sensor.node_id == ^node_id,
+      order_by: [desc: :inserted_at]
+    Repo.all(query)
   end
 
   @doc """

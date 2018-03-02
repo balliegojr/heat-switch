@@ -9,6 +9,15 @@ defmodule SensorNodesWeb.ReadingController do
     render(conn, "index.html", readings: readings)
   end
 
+  def filter_by_sensor(conn, %{"sensor_id" => id}) do
+    readings = Sensors.list_readings_by_sensor(id)
+    render(conn, "index.html", readings: readings)
+  end
+
+  def filter_by_node(conn, %{"node_id" => id}) do
+    readings = Sensors.list_readings_by_sensor(id)
+    render(conn, "index.html", readings: readings)
+  end
   # def new(conn, _params) do
   #   changeset = Sensors.change_reading(%Reading{})
   #   render(conn, "new.html", changeset: changeset)

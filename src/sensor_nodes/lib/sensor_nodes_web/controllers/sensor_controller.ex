@@ -9,6 +9,11 @@ defmodule SensorNodesWeb.SensorController do
     render(conn, "index.html", sensors: sensors)
   end
 
+  def filter_by_node(conn, %{"node_id" => id}) do
+    sensors = Sensors.list_sensors_by_node(id)
+    render(conn, "index.html", sensors: sensors)
+  end
+
   def new(conn, _params) do
     changeset = Sensors.change_sensor(%Sensor{})
     render(conn, "new.html", changeset: changeset)

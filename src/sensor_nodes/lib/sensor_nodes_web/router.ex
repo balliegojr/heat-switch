@@ -18,8 +18,13 @@ defmodule SensorNodesWeb.Router do
 
     get "/", PageController, :index
     resources "/users", UserController
-    resources "/nodes", NodeController, except: [:show]
-    resources "/sensors", SensorController, except: [:new, :create]
+    resources "/nodes", NodeController, except: [:show] do
+      get "/sensors", SensorController, :filter_by_node
+      get "/readings", ReadingController, :filter_by_node
+    end
+    resources "/sensors", SensorController, except: [:new, :create] do
+      get "/readings", ReadingController, :filter_by_sensor
+    end
     resources "/readings", ReadingController, except: [:new, :create]
     
   end

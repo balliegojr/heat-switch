@@ -33,6 +33,7 @@
       <td><%= sensor.lower %></td>
 
       <td class="text-right">
+        <span><%= link "Exibir leituras", to: sensor_reading_path(@conn, :filter_by_sensor, sensor), class: "btn btn-info btn-xs" %></span>
         <span><%= link "Editar", to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
       </td>
     </tr>
