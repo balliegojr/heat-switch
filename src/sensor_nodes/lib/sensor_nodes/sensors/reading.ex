@@ -17,7 +17,7 @@ defmodule SensorNodes.Sensors.Reading do
   @doc false
   def changeset(%Reading{} = reading, attrs) do
     reading
-    |> cast(attrs, [:sensor_uid, :type, :value])
-    |> validate_required([:sensor_uid, :type, :value])
+    |> cast(attrs, [:sensor_uid, :type, :value, :sensor_id])
+    |> validate_required([:sensor_uid, :type, :value, :sensor_id])
   end
 end
