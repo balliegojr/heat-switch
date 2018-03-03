@@ -1,3 +1,5 @@
+#!/bin/python3
+
 import paho.mqtt.client as mqtt
 import serial
 import random
