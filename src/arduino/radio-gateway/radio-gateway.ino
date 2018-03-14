@@ -29,14 +29,6 @@ void setup()
  
 void loop()
 {
- if (radio.available()){
-  char radio_info[32];
-  radio.read(&radio_info, 32);
-
-  Serial.println(radio_info);
-  Serial.flush();
- }
-
  if (Serial.available()){
   
   char serial_info[32];
@@ -45,6 +37,16 @@ void loop()
   radio.stopListening();
   radio.write(serial_info, 32);
   radio.startListening();
+ }
+
+ delay(20);
+
+ if (radio.available()){
+  char radio_info[32];
+  radio.read(&radio_info, 32);
+
+  Serial.println(radio_info);
+  Serial.flush();
  }
 
  delay(20);

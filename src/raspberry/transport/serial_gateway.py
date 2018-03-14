@@ -22,4 +22,3 @@ def write(payload):
         raise Exception('Not initialized')
 
     port.write(payload.encode())
-

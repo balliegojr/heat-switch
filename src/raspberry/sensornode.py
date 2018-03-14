@@ -10,11 +10,6 @@ from uuid import getnode as get_mac
 from peewee import SqliteDatabase, Model, DoesNotExist, JOIN, \
     PrimaryKeyField, FloatField, CharField, BooleanField
 
-if True:
-    import transport.serial_gateway as comm
-else:
-    import transport.radio as comm
-
 broker_address="iot.eclipse.org"
 topic_base = "viper"
 node_id = None
@@ -155,6 +150,11 @@ if __name__ == '__main__':
     if '--id' in sys.argv:
         print(node_id)
         exit()
+
+    if '--radio' in sys.argv:
+        import transport.radio as comm
+    else:
+        import transport.serial_gateway as comm
 
 
     client = mqtt.Client("P1") #create new instance

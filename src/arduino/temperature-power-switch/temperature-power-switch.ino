@@ -10,14 +10,16 @@ const int uid_address = 0;
 const uint64_t w_pipe = 0x0606060606;
 const uint64_t r_pipe = 0x0707070707;
 
+const int loop_interval = 100;
+
 char uid[] = "0000000";
 char op_mode = 'A';
 
 const int temperatureSensorPin = 0; 
 const int powerRelayPin = 10;
 
-float upperCelciusLimit = 32.0;
-float lowerCelciusLimit = 28.0;
+float upperCelciusLimit = 30.0;
+float lowerCelciusLimit = 26.0;
 
 int powerRelayStatus = LOW;
 int override_relay = LOW;
@@ -160,9 +162,9 @@ void override_mode() {
   }
 }
 
-void report_mode() {
-  if (current_loop % 20 != 0){
-    return;
+int report_mode() {
+  if (current_loop % 100 != 0){
+    return -1;
   }
   
   int temperatureC = read_temp();
@@ -170,6 +172,8 @@ void report_mode() {
   char text[32];
   sprintf(text, "t:%d", temperatureC);
   send_radio(text);
+
+  return temperatureC;
 }
 
 int read_temp() {
@@ -180,11 +184,10 @@ int read_temp() {
 }
 
 void automatic_mode() {
-  if (current_loop % 20 != 0){
+  int temperatureC = report_mode();
+  if (temperatureC == -1) {
     return;
   }
-  
-  int temperatureC = read_temp();
  
   int newRelayStatus = powerRelayStatus;
   if (temperatureC >= upperCelciusLimit){
@@ -204,11 +207,7 @@ void automatic_mode() {
       strcpy(status_str, "r:off");
       send_radio(status_str);
     }
- } 
-
- char text[32];
- sprintf(text, "t:%d", temperatureC);
- send_radio(text);
+  } 
 }
 
 void process_radio_message(char* message) {
@@ -258,8 +257,8 @@ void loop()
   }
 
   current_loop++;
-  if (current_loop == 100000){
+  if (current_loop == 1000000){
     current_loop = 0;
   }
-  delay(100);                                     
+  delay(loop_interval);                                     
 }
