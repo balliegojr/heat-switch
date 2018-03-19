@@ -1,0 +1,21 @@
+<%= if authenticated?(@conn) do %>
+
+    <ul class="nav navbar-nav navbar-right dropdown">
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= @user.email %> <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><%= link gettext("Profile"), to: user_path(@conn, :profile) %></li>
+                <li><%= link gettext("Sign out"), to: page_path(@conn, :signout) %></li>
+            </ul>
+        </li>
+    </ul>
+
+<% else %>
+    <ul class="nav navbar-nav navbar-right">
+        <li><%= link gettext("Join"), to: page_path(@conn, :join) %></li>
+        <li><%= link gettext("Sign In"), to: page_path(@conn, :login) %></li>
+    </ul>
+<% end %>

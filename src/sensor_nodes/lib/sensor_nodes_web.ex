@@ -40,6 +40,7 @@ defmodule SensorNodesWeb do
       import SensorNodesWeb.Router.Helpers
       import SensorNodesWeb.ErrorHelpers
       import SensorNodesWeb.Gettext
+      import SensorNodesWeb.ViewHelpers
     end
   end
 

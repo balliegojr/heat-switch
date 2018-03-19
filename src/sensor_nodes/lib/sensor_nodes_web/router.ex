@@ -10,10 +10,7 @@ defmodule SensorNodesWeb.Router do
   end
 
   pipeline :auth do
-    plug Guardian.Plug.Pipeline, error_handler: SensorNodes.Auth.ErrorHandler, module: SensorNodes.Auth.Guardian
-    plug Guardian.Plug.VerifySession, claims: %{"typ" => "access"}
-    plug Guardian.Plug.VerifyHeader, claims: %{"typ" => "access"}
-    plug Guardian.Plug.LoadResource, allow_blank: true
+    plug SensorNodes.Auth.Pipeline
   end
   
   pipeline :ensure_auth do
@@ -32,6 +29,7 @@ defmodule SensorNodesWeb.Router do
     post "/signin", PageController, :signin
     get "/join", PageController, :join
     post "/signup", PageController, :signup
+    
   end
  
 
@@ -39,12 +37,15 @@ defmodule SensorNodesWeb.Router do
     pipe_through [:browser, :auth] # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users", UserController
   end
 
   scope "/", SensorNodesWeb do
     pipe_through [:browser, :auth, :ensure_auth] # Use the default browser stack
-
+    
+    get "/signout", PageController, :signout
+    get "/profile", UserController, :profile
+    get "/editprofile", UserController, :edit_profile
+    put "/editprofile", UserController, :update
 
     resources "/nodes", NodeController, except: [:show] do
       get "/sensors", SensorController, :filter_by_node

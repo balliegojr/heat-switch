@@ -120,12 +120,12 @@ defmodule SensorNodes.Sensors do
       [%Sensor{}, ...]
 
   """
-  def list_sensors do
-    Repo.all(Sensor)
+  def list_sensors(user_id) do
+    Repo.all(from s in Sensor, where: s.user_id == ^user_id)
   end
 
-  def list_sensors_by_node (node_id) do 
-    Repo.all(from sensor in Sensor, where: sensor.node_id == ^node_id )
+  def list_sensors_by_node(user_id, node_id) do 
+    Repo.all(from sensor in Sensor, where: sensor.user_id == ^user_id and sensor.node_id == ^node_id )
   end
 
   @doc """
@@ -142,9 +142,11 @@ defmodule SensorNodes.Sensors do
       ** (Ecto.NoResultsError)
 
   """
-  def get_sensor!(id), do: Repo.get!(Sensor, id)
+  def get_sensor!(user_id, id) do 
+    Repo.one!(from s in Sensor, where: s.user_id == ^user_id and s.id == ^id)
+  end
 
-  def get_sensor_by_uid(uid) do
+  defp get_sensor_by_uid(uid) do
     Repo.get_by(Sensor, sensor_uid: uid)
   end
   @doc """
@@ -224,18 +226,18 @@ defmodule SensorNodes.Sensors do
       [%Reading{}, ...]
 
   """
-  def list_readings do
-    Repo.all(from reading in Reading, order_by: [desc: :inserted_at])
+  def list_readings(user_id) do
+    Repo.all(from reading in Reading, where: reading.user_id == ^user_id, order_by: [desc: :inserted_at])
   end
 
-  def list_readings_by_sensor(sensor_id) do
-    Repo.all(from reading in Reading, where: reading.sensor_id == ^sensor_id, order_by: [desc: :inserted_at])
+  def list_readings_by_sensor(user_id, sensor_id) do
+    Repo.all(from reading in Reading, where: reading.user_id == ^user_id and reading.sensor_id == ^sensor_id, order_by: [desc: :inserted_at])
   end
 
-  def list_readings_by_node(node_id) do
+  def list_readings_by_node(user_id, node_id) do
     query = from reading in Reading, 
       join: sensor in Sensor,
-      where: sensor.id == reading.sensor_id and sensor.node_id == ^node_id,
+      where: reading.user_id == ^user_id and sensor.id == reading.sensor_id and sensor.node_id == ^node_id,
       order_by: [desc: :inserted_at]
     Repo.all(query)
   end
@@ -254,7 +256,9 @@ defmodule SensorNodes.Sensors do
       ** (Ecto.NoResultsError)
 
   """
-  def get_reading!(id), do: Repo.get!(Reading, id)
+  def get_reading!(user_id, id) do
+     Repo.one!(from reading in Reading, where: reading.user_id == ^user_id and reading.id == ^id)
+  end
 
   @doc """
   Creates a reading.

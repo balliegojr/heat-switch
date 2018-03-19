@@ -7,28 +7,28 @@ defmodule SensorNodesWeb.SensorController do
   require SensorNodesWeb.Gettext
 
   def index(conn, _params) do
-    sensors = Sensors.list_sensors()
+    sensors = Sensors.list_sensors(Guardian.Plug.current_resource(conn).id)
     render(conn, "index.html", sensors: sensors)
   end
 
   def filter_by_node(conn, %{"node_id" => id}) do
-    sensors = Sensors.list_sensors_by_node(id)
+    sensors = Sensors.list_sensors_by_node(Guardian.Plug.current_resource(conn).id, id)
     render(conn, "index.html", sensors: sensors)
   end
 
   def show(conn, %{"id" => id}) do
-    sensor = Sensors.get_sensor!(id)
+    sensor = Sensors.get_sensor!(Guardian.Plug.current_resource(conn).id, id)
     render(conn, "show.html", sensor: sensor)
   end
 
   def edit(conn, %{"id" => id}) do
-    sensor = Sensors.get_sensor!(id)
+    sensor = Sensors.get_sensor!(Guardian.Plug.current_resource(conn).id, id)
     changeset = Sensors.change_sensor(sensor)
     render(conn, "edit.html", sensor: sensor, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "sensor" => sensor_params}) do
-    sensor = Sensors.get_sensor!(id)
+    sensor = Sensors.get_sensor!(Guardian.Plug.current_resource(conn).id, id)
 
     case Sensors.update_sensor(sensor, sensor_params) do
       {:ok, sensor} ->
@@ -41,7 +41,7 @@ defmodule SensorNodesWeb.SensorController do
   end
 
   def delete(conn, %{"id" => id}) do
-    sensor = Sensors.get_sensor!(id)
+    sensor = Sensors.get_sensor!(Guardian.Plug.current_resource(conn).id, id)
     {:ok, _sensor} = Sensors.delete_sensor(sensor)
 
     conn

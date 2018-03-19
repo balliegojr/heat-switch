@@ -37,6 +37,12 @@ defmodule SensorNodesWeb.PageController do
         render(conn, "signup.html", changeset: changeset, action: page_path(conn, :signup))
     end
   end
+  
+  def signout(conn) do
+    conn
+    |> Guardian.Plug.sign_out(conn)
+    |> redirect(to: page_path(conn, :index))
+  end
  
 
   defp signin_reply({:error, error}, conn) do

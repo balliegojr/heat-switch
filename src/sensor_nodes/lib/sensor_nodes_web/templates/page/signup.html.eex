@@ -25,7 +25,6 @@
                     <%= text_input f, :password_confirmation, class: "form-control", type: :password, placeholder: gettext "Confirm Password" %>
                     <%= error_tag f, :password_confirmation %>
                 </div>
-                
 
                 <div class="col-md-12">
                     <hr />
