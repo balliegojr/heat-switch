@@ -1,1 +1,5 @@
 /* This file is for your main application css. */
+.navbar-center {
+    float: none !important;
+    display: inline-block;
+}

@@ -15,7 +15,7 @@ defmodule SensorNodes.Sensors.Node do
   @doc false
   def changeset(%Node{} = node, attrs) do
     node
-    |> cast(attrs, [:node_uid, :name])
-    |> validate_required([:node_uid])
+    |> cast(attrs, [:node_uid, :name, :user_id])
+    |> validate_required([:node_uid, :user_id])
   end
 end

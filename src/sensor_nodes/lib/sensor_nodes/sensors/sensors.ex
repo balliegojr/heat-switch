@@ -17,8 +17,8 @@ defmodule SensorNodes.Sensors do
       [%Node{}, ...]
 
   """
-  def list_nodes do
-    Repo.all(Node)
+  def list_nodes(user_id) do
+    Repo.all(from f in Node, where: f.user_id == ^user_id)
   end
 
   @doc """
@@ -35,7 +35,10 @@ defmodule SensorNodes.Sensors do
       ** (Ecto.NoResultsError)
 
   """
-  def get_node!(id), do: Repo.get!(Node, id)
+  defp get_node!(id), do: Repo.get!(Node, id)
+  def get_node!(user_id, id) do
+    Repo.one!(from n in Node, where: n.id == ^id and n.user_id == ^user_id)
+  end
 
   def get_node_by_uid(uid) do
     Repo.get_by(Node, node_uid: uid)
@@ -53,9 +56,9 @@ defmodule SensorNodes.Sensors do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_node(attrs \\ %{}) do
+  def create_node(user_id, attrs \\ %{}) do
     %Node{}
-    |> Node.changeset(attrs)
+    |> Node.changeset(Map.put(attrs, "user_id", user_id))
     |> Repo.insert()
   end
 

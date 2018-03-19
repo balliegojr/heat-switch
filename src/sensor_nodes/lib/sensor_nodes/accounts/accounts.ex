@@ -4,9 +4,11 @@ defmodule SensorNodes.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import SensorNodesWeb.Gettext
   alias SensorNodes.Repo
-
   alias SensorNodes.Accounts.User
+  alias Comeonin.Bcrypt
+
 
   @doc """
   Returns the list of users.
@@ -100,5 +102,18 @@ defmodule SensorNodes.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def authenticate_user(email, password) do
+    Repo.one(from u in User, where: u.email == ^email)
+      |> check_password(password) 
+  end
+
+  defp check_password(nil, _), do: {:error, gettext("Incorrect username or password")}
+  defp check_password(user, plain_text_password) do
+    case Bcrypt.checkpw(plain_text_password, user.password_hash) do
+      true -> {:ok, user}
+      false -> {:error, gettext("Incorrect username or password")}
+    end
   end
 end

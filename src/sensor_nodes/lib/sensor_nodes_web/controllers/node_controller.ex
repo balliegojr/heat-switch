@@ -5,7 +5,7 @@ defmodule SensorNodesWeb.NodeController do
   alias SensorNodes.Sensors.Node
 
   def index(conn, _params) do
-    nodes = Sensors.list_nodes()
+    nodes = Sensors.list_nodes(Guardian.Plug.current_resource(conn).id)
     render(conn, "index.html", nodes: nodes)
   end
 
@@ -15,7 +15,7 @@ defmodule SensorNodesWeb.NodeController do
   end
 
   def create(conn, %{"node" => node_params}) do
-    case Sensors.create_node(node_params) do
+    case Sensors.create_node(Guardian.Plug.current_resource(conn).id, node_params) do
       {:ok, node} ->
         conn
         |> put_flash(:info, "Nó criado com sucesso.")
@@ -26,13 +26,13 @@ defmodule SensorNodesWeb.NodeController do
   end
 
   def edit(conn, %{"id" => id}) do
-    node = Sensors.get_node!(id)
+    node = Sensors.get_node!(Guardian.Plug.current_resource(conn).id, id)
     changeset = Sensors.change_node(node)
     render(conn, "edit.html", node: node, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "node" => node_params}) do
-    node = Sensors.get_node!(id)
+    node = Sensors.get_node!(Guardian.Plug.current_resource(conn).id, id)
 
     case Sensors.update_node(node, node_params) do
       {:ok, node} ->
@@ -45,7 +45,7 @@ defmodule SensorNodesWeb.NodeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    node = Sensors.get_node!(id)
+    node = Sensors.get_node!(Guardian.Plug.current_resource(conn).id, id)
     {:ok, _node} = Sensors.delete_node(node)
 
     conn

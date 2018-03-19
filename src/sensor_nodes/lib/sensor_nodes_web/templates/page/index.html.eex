@@ -1,5 +1,5 @@
 <div class="jumbotron">
-  <h2>Bem vindo ao Termo Power online</h2>
-  <p class="lead">Aqui você pode cadastrar seus nós de sensores e acompanhar em tempo real a temperatura do ambiente</p>
+  <h2><%= gettext "Welcome to TermoPower online" %></h2>
+  <p class="lead"><%= gettext "Here you can register your node controllers and watch, in real time, the temperature of your controlled environments" %></p>
 </div>
 

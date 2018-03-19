@@ -10,7 +10,7 @@
 
 /* Space out content a bit */
 body, form, ul, table {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   margin-bottom: 20px;
 }
 
@@ -18,9 +18,9 @@ body, form, ul, table {
 .alert:empty { display: none; }
 
 /* Custom page header */
-.header {
+/* .header {
   border-bottom: 1px solid #e5e5e5;
-}
+} */
 .logo {
   width: 519px;
   height: 71px;
