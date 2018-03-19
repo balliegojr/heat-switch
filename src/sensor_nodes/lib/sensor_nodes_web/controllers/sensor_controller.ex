@@ -4,6 +4,8 @@ defmodule SensorNodesWeb.SensorController do
   alias SensorNodes.Sensors
   alias SensorNodes.Sensors.Sensor
 
+  require SensorNodesWeb.Gettext
+
   def index(conn, _params) do
     sensors = Sensors.list_sensors()
     render(conn, "index.html", sensors: sensors)
@@ -12,22 +14,6 @@ defmodule SensorNodesWeb.SensorController do
   def filter_by_node(conn, %{"node_id" => id}) do
     sensors = Sensors.list_sensors_by_node(id)
     render(conn, "index.html", sensors: sensors)
-  end
-
-  def new(conn, _params) do
-    changeset = Sensors.change_sensor(%Sensor{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  def create(conn, %{"sensor" => sensor_params}) do
-    case Sensors.create_sensor(sensor_params) do
-      {:ok, sensor} ->
-        conn
-        |> put_flash(:info, "Sensor criado com sucesso.")
-        |> redirect(to: sensor_path(conn, :show, sensor))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
   end
 
   def show(conn, %{"id" => id}) do
@@ -47,7 +33,7 @@ defmodule SensorNodesWeb.SensorController do
     case Sensors.update_sensor(sensor, sensor_params) do
       {:ok, sensor} ->
         conn
-        |> put_flash(:info, "Sensor atualizado com sucesso.")
+        |> put_flash(:info, gettext("Sensor updated"))
         |> redirect(to: sensor_path(conn, :show, sensor))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", sensor: sensor, changeset: changeset)
@@ -59,7 +45,7 @@ defmodule SensorNodesWeb.SensorController do
     {:ok, _sensor} = Sensors.delete_sensor(sensor)
 
     conn
-    |> put_flash(:info, "Sensor excluido com sucesso.")
+    |> put_flash(:info, gettext("Sensor deleted"))
     |> redirect(to: sensor_path(conn, :index))
   end
 end

@@ -1,23 +1,16 @@
-<h2>Nós cadastrados</h2>
+<h2><%= gettext "Node controllers" %></h2>
 <div class="row">
   <div class="col-md-12">
-    <span>Aqui você pode cadastrar novos nós ou excluir um nó existente</span>
-  </div>
-</div>
-<hr />
-
-<div class="row">
-  <div class="col-md-12">
-    <span>Dica: Para recuperar o id de um nó, execute o comando <strong>python3 sensornode.py --id</strong> no seu raspberry</span>
+    <span><%= gettext "In this page you can manage your registered node controllers" %></span>
   </div>
 </div>
 
 <table class="table">
   <thead>
     <tr>
-      <th>Nome</th>
-      <th>Identificação do nó</th>
-      <th class="text-right"><span><%= link "Novo", to: node_path(@conn, :new) %></span></th>
+      <th><%= gettext "Name" %></th>
+      <th><%= gettext "Node identification" %></th>
+      <th class="text-right"><span><%= link gettext("New"), to: node_path(@conn, :new) %></span></th>
     </tr>
   </thead>
   <tbody>
@@ -27,10 +20,10 @@
       <td><%= node.node_uid %></td>
 
       <td class="text-right">
-        <span><%= link "Exibir sensores", to: node_sensor_path(@conn, :filter_by_node, node), class: "btn btn-info btn-xs" %></span>
-        <span><%= link "Exibir leituras", to: node_reading_path(@conn, :filter_by_node, node), class: "btn btn-warning btn-xs" %></span>
-        <span><%= link "Editar", to: node_path(@conn, :edit, node), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Excluir", to: node_path(@conn, :delete, node), method: :delete, data: [confirm: "Você tem certeza?"], class: "btn btn-danger btn-xs" %></span>
+        <span><%= link gettext("Show sensors"), to: node_sensor_path(@conn, :filter_by_node, node), class: "btn btn-info btn-xs" %></span>
+        <span><%= link gettext("Show readings"), to: node_reading_path(@conn, :filter_by_node, node), class: "btn btn-warning btn-xs" %></span>
+        <span><%= link gettext("Edit"), to: node_path(@conn, :edit, node), class: "btn btn-default btn-xs" %></span>
+        <span><%= link gettext("Delete"), to: node_path(@conn, :delete, node), method: :delete, data: [confirm: gettext("Are you sure you want to delete this Node Controller?")], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
 <% end %>

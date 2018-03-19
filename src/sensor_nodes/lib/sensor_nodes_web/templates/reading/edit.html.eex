@@ -1,5 +1,0 @@
-<h2>Edit Reading</h2>
-
-<%= render "form.html", Map.put(assigns, :action, reading_path(@conn, :update, @reading)) %>
-
-<span><%= link "Back", to: reading_path(@conn, :index) %></span>

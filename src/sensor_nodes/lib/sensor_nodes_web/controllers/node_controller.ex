@@ -3,6 +3,7 @@ defmodule SensorNodesWeb.NodeController do
 
   alias SensorNodes.Sensors
   alias SensorNodes.Sensors.Node
+  require SensorNodesWeb.Gettext
 
   def index(conn, _params) do
     nodes = Sensors.list_nodes(Guardian.Plug.current_resource(conn).id)
@@ -18,7 +19,7 @@ defmodule SensorNodesWeb.NodeController do
     case Sensors.create_node(Guardian.Plug.current_resource(conn).id, node_params) do
       {:ok, node} ->
         conn
-        |> put_flash(:info, "Nó criado com sucesso.")
+        |> put_flash(:info, gettext("Node controller created"))
         |> redirect(to: node_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -37,7 +38,7 @@ defmodule SensorNodesWeb.NodeController do
     case Sensors.update_node(node, node_params) do
       {:ok, node} ->
         conn
-        |> put_flash(:info, "Nó atualizado com sucesso.")
+        |> put_flash(:info, gettext("Node controller updated"))
         |> redirect(to: node_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", node: node, changeset: changeset)
@@ -49,7 +50,7 @@ defmodule SensorNodesWeb.NodeController do
     {:ok, _node} = Sensors.delete_node(node)
 
     conn
-    |> put_flash(:info, "Nó excluido com sucesso.")
+    |> put_flash(:info, gettext("Node controller removed"))
     |> redirect(to: node_path(conn, :index))
   end
 end

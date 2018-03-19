@@ -1,5 +1,0 @@
-<h2>New Reading</h2>
-
-<%= render "form.html", Map.put(assigns, :action, reading_path(@conn, :create)) %>
-
-<span><%= link "Back", to: reading_path(@conn, :index) %></span>

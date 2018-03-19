@@ -1,14 +1,15 @@
-<h2>Sensores</h2>
-<span>Os sensores são cadastrados automaticamente, quando ativados. É possivel atribuir um nome ou mudar o modo de operação.
+<h2><%= gettext "Sensors" %></h2>
+<span><%= "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller" %></span>
+
 <table class="table">
   <thead>
     <tr>
-      <th>Nome</th>
-      <th>Identificação</th>
-      <th>Modo</th>
-      <th>Status</th>
-      <th>Limite superior</th>
-      <th>Limite inferior</th>
+      <th><%= gettext "Name" %></th>
+      <th><%= gettext "Identification" %></th>
+      <th><%= gettext "Mode" %></th>
+      <th><%= gettext "Status" %></th>
+      <th><%= gettext "Upper boundary" %></th>
+      <th><%= gettext "Lower boundary" %></th>
 
       <th></th>
     </tr>
@@ -22,19 +23,19 @@
       <td>
         <%= 
           case sensor.op_mode do
-            "A" -> "Automático"
-            "R" -> "Apenas leitura"
-            "O" -> "Override"
+            "A" -> gettext "Automatic"
+            "R" -> gettext "Reading Only"
+            "O" -> gettext "Override"
           end
         %>
         </td>
-      <td><%= if sensor.relay_status, do: "Ligado", else: "Desligado" %></td>
+      <td><%= if sensor.relay_status, do: gettext("On"), else: gettext("Off") %></td>
       <td><%= sensor.upper %></td>
       <td><%= sensor.lower %></td>
 
       <td class="text-right">
-        <span><%= link "Exibir leituras", to: sensor_reading_path(@conn, :filter_by_sensor, sensor), class: "btn btn-info btn-xs" %></span>
-        <span><%= link "Editar", to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
+        <span><%= link gettext("Show readings"), to: sensor_reading_path(@conn, :filter_by_sensor, sensor), class: "btn btn-info btn-xs" %></span>
+        <span><%= link gettext("Edit"), to: sensor_path(@conn, :edit, sensor), class: "btn btn-default btn-xs" %></span>
       </td>
     </tr>
 <% end %>

@@ -18,21 +18,6 @@ defmodule SensorNodesWeb.ReadingController do
     readings = Sensors.list_readings_by_sensor(id)
     render(conn, "index.html", readings: readings)
   end
-  # def new(conn, _params) do
-  #   changeset = Sensors.change_reading(%Reading{})
-  #   render(conn, "new.html", changeset: changeset)
-  # end
-
-  # def create(conn, %{"reading" => reading_params}) do
-  #   case Sensors.create_reading(reading_params) do
-  #     {:ok, reading} ->
-  #       conn
-  #       |> put_flash(:info, "Reading created successfully.")
-  #       |> redirect(to: reading_path(conn, :show, reading))
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       render(conn, "new.html", changeset: changeset)
-  #   end
-  # end
 
   def show(conn, %{"id" => id}) do
     reading = Sensors.get_reading!(id)

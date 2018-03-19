@@ -1,12 +1,12 @@
-<h2>Leituras efetuadas</h2>
-<span>Aqui é possivel acompanhar as leituras efetuadas pelos sensores</span>
+<h2><%= gettext "Readings" %></h2>
+<span><%= gettext "In this page you can see the readings of your sensors"%></span>
 <table class="table">
   <thead>
     <tr>
-      <th>Sensor</th>
-      <th>Tipo de leitura</th>
-      <th>Valor da leitura</th>
-      <th>Data da leitura</th>
+      <th><%= gettext "Sensor" %></th>
+      <th><%= gettext "Reading type" %></th>
+      <th><%= gettext "Reading value" %></th>
+      <th><%= gettext "Reading date" %></th>
     </tr>
   </thead>
   <tbody>
