@@ -65,7 +65,13 @@ exports.config = {
   npm: {
     enabled: true,
     styles: { 
-      "font-awesome": ['css/font-awesome.min.css'] 
+      "font-awesome": ['css/font-awesome.min.css'],
+      "bootstrap3": ['dist/css/bootstrap.min.css']
+    },
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery',
     }
+    
   }
 };

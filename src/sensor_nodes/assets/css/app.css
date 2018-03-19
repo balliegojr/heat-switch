@@ -1,4 +1,6 @@
 /* This file is for your main application css. */
+.alert:empty { display: none; }
+
 .navbar-center {
     float: none !important;
     display: inline-block;
