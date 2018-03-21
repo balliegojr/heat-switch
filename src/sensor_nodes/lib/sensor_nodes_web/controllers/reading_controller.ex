@@ -18,9 +18,5 @@ defmodule SensorNodesWeb.ReadingController do
     render(conn, "index.html", readings: readings)
   end
 
-  def show(conn, %{"id" => id}) do
-    reading = Sensors.get_reading!(Guardian.Plug.current_resource(conn).id, id)
-    render(conn, "show.html", reading: reading)
-  end
 
 end

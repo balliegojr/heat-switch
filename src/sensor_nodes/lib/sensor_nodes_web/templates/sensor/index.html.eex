@@ -26,6 +26,7 @@
             "A" -> gettext "Automatic"
             "R" -> gettext "Reading Only"
             "O" -> gettext "Override"
+            _ -> sensor.op_mode
           end
         %>
         </td>

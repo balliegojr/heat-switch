@@ -89,7 +89,7 @@ def process_content(content):
         _sensor_uid = generate_sensor_uid()
         payload = ('0000000:SI' + _sensor_uid)
         comm.write(payload)
-        client.publish(f"{topic_base}/node/{node_id}/sensor/{uid}/id", f"id:{_sensor_uid};op_mode:A;lower:28.0;upper:32.0;status:0")
+        client.publish(f"{topic_base}/node/{node_id}/sensor/{uid}/id", f"id:{_sensor_uid};op_mode:A;lower:26.0;upper:30.0;status:0")
         create_sensor_info(_sensor_uid)
     elif 'G' in command:
         send_sensor_info(uid)

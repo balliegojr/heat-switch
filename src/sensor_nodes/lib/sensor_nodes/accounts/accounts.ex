@@ -104,6 +104,16 @@ defmodule SensorNodes.Accounts do
     User.changeset(user, %{})
   end
 
+  @doc """
+    Return a User if email and password match in database
+
+  ## Examples
+    iex> authenticate_user(email, password)
+    {:ok, %User{}}
+    
+    iex> authenticate_user(email, password)
+    {:error, "Incorrect username or password"}
+  """
   def authenticate_user(email, password) do
     Repo.one(from u in User, where: u.email == ^email)
       |> check_password(password) 

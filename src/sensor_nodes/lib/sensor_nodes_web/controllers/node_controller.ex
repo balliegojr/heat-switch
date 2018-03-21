@@ -17,7 +17,7 @@ defmodule SensorNodesWeb.NodeController do
 
   def create(conn, %{"node" => node_params}) do
     case Sensors.create_node(Guardian.Plug.current_resource(conn).id, node_params) do
-      {:ok, node} ->
+      {:ok, _node} ->
         conn
         |> put_flash(:info, gettext("Node controller created"))
         |> redirect(to: node_path(conn, :index))
@@ -36,7 +36,7 @@ defmodule SensorNodesWeb.NodeController do
     node = Sensors.get_node!(Guardian.Plug.current_resource(conn).id, id)
 
     case Sensors.update_node(node, node_params) do
-      {:ok, node} ->
+      {:ok, _node} ->
         conn
         |> put_flash(:info, gettext("Node controller updated"))
         |> redirect(to: node_path(conn, :index))

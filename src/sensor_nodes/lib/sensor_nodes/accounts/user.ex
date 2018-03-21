@@ -17,10 +17,10 @@ defmodule SensorNodes.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
-    |> validate_required([:email, :password])
-    |> validate_confirmation(:password, message: SensorNodesWeb.Gettext.gettext("Password does not match"))
-    |> unique_constraint(:email, message: SensorNodesWeb.Gettext.gettext("Email already in use"))
+    |> cast(attrs, [:email, :password, :password_confirmation])
+    |> validate_required([:email, :password, :password_confirmation])
+    |> validate_confirmation(:password, message: gettext("Password does not match"))
+    |> unique_constraint(:email, message: gettext("Email already in use"))
     |> put_pass_hash()
   end
 

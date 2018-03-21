@@ -38,9 +38,9 @@ defmodule SensorNodesWeb.PageController do
     end
   end
   
-  def signout(conn) do
+  def signout(conn, _) do
     conn
-    |> Guardian.Plug.sign_out(conn)
+    |> Guardian.Plug.sign_out()
     |> redirect(to: page_path(conn, :index))
   end
  
@@ -57,14 +57,4 @@ defmodule SensorNodesWeb.PageController do
     |> Guardian.Plug.sign_in(user)
     |> redirect(to: node_path(conn, :index))
   end
-
-  def signout(conn, _) do
-    conn
-    |> Guardian.Plug.sign_out()
-    |> redirect(to: page_path(conn, :login))
-
-    
-  end
-
-
 end

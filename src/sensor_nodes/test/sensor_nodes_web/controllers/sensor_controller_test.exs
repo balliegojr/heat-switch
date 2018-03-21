@@ -1,5 +1,6 @@
 defmodule SensorNodesWeb.SensorControllerTest do
   use SensorNodesWeb.ConnCase
+  import SensorNodesWeb.ControllersHelper
 
   alias SensorNodes.Sensors
 
@@ -8,39 +9,30 @@ defmodule SensorNodesWeb.SensorControllerTest do
   @invalid_attrs %{lower: nil, op_mode: nil, relay_status: nil, sensor_uid: nil, upper: nil}
 
   def fixture(:sensor) do
-    {:ok, sensor} = Sensors.create_sensor(@create_attrs)
+    user = get_default_user()
+    {:ok, node} = Sensors.create_node(user.id, %{ "node_uid" => "node_uid" })
+
+    {:ok, sensor} = Sensors.create_sensor(Map.merge(@create_attrs, %{user_id: user.id, node_id: node.id}))
     sensor
   end
 
+  setup [:authenticate]
+
   describe "index" do
+    setup [:create_sensor]
+  
     test "lists all sensors", %{conn: conn} do
       conn = get conn, sensor_path(conn, :index)
-      assert html_response(conn, 200) =~ "Listing Sensors"
-    end
-  end
-
-  describe "new sensor" do
-    test "renders form", %{conn: conn} do
-      conn = get conn, sensor_path(conn, :new)
-      assert html_response(conn, 200) =~ "New Sensor"
-    end
-  end
-
-  describe "create sensor" do
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post conn, sensor_path(conn, :create), sensor: @create_attrs
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == sensor_path(conn, :show, id)
-
-      conn = get conn, sensor_path(conn, :show, id)
-      assert html_response(conn, 200) =~ "Show Sensor"
+      assert html_response(conn, 200) =~ "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller"
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, sensor_path(conn, :create), sensor: @invalid_attrs
-      assert html_response(conn, 200) =~ "New Sensor"
+    test "lists all sensors of a given node", %{conn: conn} do
+      node = Sensors.get_node_by_uid!("node_uid")
+
+      conn = get conn, node_sensor_path(conn, :filter_by_node, node)
+      assert html_response(conn, 200) =~ "sensor_uid"
     end
+
   end
 
   describe "edit sensor" do
@@ -59,7 +51,9 @@ defmodule SensorNodesWeb.SensorControllerTest do
       conn = put conn, sensor_path(conn, :update, sensor), sensor: @update_attrs
       assert redirected_to(conn) == sensor_path(conn, :show, sensor)
 
-      conn = get conn, sensor_path(conn, :show, sensor)
+      {:ok, conn} = authenticate(%{conn: build_conn()}) 
+
+      conn = get conn[:conn], sensor_path(conn[:conn], :index)
       assert html_response(conn, 200) =~ "some updated op_mode"
     end
 
@@ -75,9 +69,10 @@ defmodule SensorNodesWeb.SensorControllerTest do
     test "deletes chosen sensor", %{conn: conn, sensor: sensor} do
       conn = delete conn, sensor_path(conn, :delete, sensor)
       assert redirected_to(conn) == sensor_path(conn, :index)
-      assert_error_sent 404, fn ->
-        get conn, sensor_path(conn, :show, sensor)
-      end
+
+      {:ok, conn} = authenticate(%{conn: build_conn()}) 
+      conn = get conn[:conn], sensor_path(conn[:conn], :index)
+      assert !(html_response(conn, 200) =~ "sensor_uid")
     end
   end
 

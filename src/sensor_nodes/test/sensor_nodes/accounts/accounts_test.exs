@@ -6,9 +6,9 @@ defmodule SensorNodes.AccountsTest do
   describe "users" do
     alias SensorNodes.Accounts.User
 
-    @valid_attrs %{email: "some email", password: "some password", username: "some username"}
-    @update_attrs %{email: "some updated email", password: "some updated password", username: "some updated username"}
-    @invalid_attrs %{email: nil, password: nil, username: nil}
+    @valid_attrs %{email: "some email", password: "some password", password_confirmation: "some password"}
+    @update_attrs %{email: "some updated email", password: "some updated password", password_confirmation: "some updated password"}
+    @invalid_attrs %{email: nil, password: nil, password_confirmation: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -16,7 +16,7 @@ defmodule SensorNodes.AccountsTest do
         |> Enum.into(@valid_attrs)
         |> Accounts.create_user()
 
-      user
+      Map.merge(user, %{password_confirmation: nil, password: nil})
     end
 
     test "list_users/0 returns all users" do
@@ -33,7 +33,18 @@ defmodule SensorNodes.AccountsTest do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
       assert user.email == "some email"
       assert user.password == "some password"
-      assert user.username == "some username"
+      assert user.password_hash != nil
+    end
+
+    test "create_user/1 validates unique constraint" do
+      user_fixture()
+
+      assert {:error, %{ errors: [email: {"Email already in use", []}]}} = Accounts.create_user(@valid_attrs)
+    end
+
+    test "create_user/1 validates password confirmation" do
+      user_wrong_confirmation = %{email: "some email", password: "some password", password_confirmation: "wrong confirmation"}
+      assert {:error, %{ errors: [password_confirmation: {"Password does not match", [validation: :confirmation]}]}} = Accounts.create_user(user_wrong_confirmation)
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -46,7 +57,6 @@ defmodule SensorNodes.AccountsTest do
       assert %User{} = user
       assert user.email == "some updated email"
       assert user.password == "some updated password"
-      assert user.username == "some updated username"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -64,6 +74,18 @@ defmodule SensorNodes.AccountsTest do
     test "change_user/1 returns a user changeset" do
       user = user_fixture()
       assert %Ecto.Changeset{} = Accounts.change_user(user)
+    end
+
+    test "authenticate_user/2 verify if password match the database" do
+      user = user_fixture()
+
+      assert {:ok, ^user}  = Accounts.authenticate_user(user.email, @valid_attrs.password)
+    end
+
+    test "authenticate_user/2 verify if password match the database with wrong password" do
+      user = user_fixture()
+
+      assert {:error, "Incorrect username or password"}  = Accounts.authenticate_user(user.email, "wrong password")
     end
   end
 end

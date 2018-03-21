@@ -1,88 +1,42 @@
 defmodule SensorNodesWeb.UserControllerTest do
   use SensorNodesWeb.ConnCase
 
+  import SensorNodesWeb.ControllersHelper
   alias SensorNodes.Accounts
 
-  @create_attrs %{email: "some email", password: "some password", username: "some username"}
-  @update_attrs %{email: "some updated email", password: "some updated password", username: "some updated username"}
-  @invalid_attrs %{email: nil, password: nil, username: nil}
+  @update_attrs %{email: "another@email.com", password: "123", password_confirmation: "123" }
+  @invalid_attrs %{email: nil, password: nil, password_confirmation: nil}
 
-  def fixture(:user) do
-    {:ok, user} = Accounts.create_user(@create_attrs)
-    user
-  end
+  describe "user profile" do
+    setup [:authenticate]
+    
+    test "shows profile information", %{conn: conn} do
+      conn = get conn, user_path(conn, :profile)
+      assert html_response(conn, 200) =~ "user@email.com"
+    end
 
-  describe "index" do
-    test "lists all users", %{conn: conn} do
-      conn = get conn, user_path(conn, :index)
-      assert html_response(conn, 200) =~ "Listing Users"
+    test "shows edit profile", %{conn: conn} do
+      conn = get conn, user_path(conn, :edit_profile)
+      assert html_response(conn, 200) =~ "Profile"
     end
   end
 
-  describe "new user" do
-    test "renders form", %{conn: conn} do
-      conn = get conn, user_path(conn, :new)
-      assert html_response(conn, 200) =~ "New User"
-    end
-  end
+ 
+  describe "update user" do
+    setup [:authenticate]
 
-  describe "create user" do
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), user: @create_attrs
+    test "redirects when data is valid", %{conn: conn} do
+      user = get_default_user()
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == user_path(conn, :show, id)
+      conn = put conn, user_path(conn, :update), user: @update_attrs
+      assert redirected_to(conn) == user_path(conn, :profile)
 
-      conn = get conn, user_path(conn, :show, id)
-      assert html_response(conn, 200) =~ "Show User"
+      assert "another@email.com" == Accounts.get_user!(user.id).email
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), user: @invalid_attrs
-      assert html_response(conn, 200) =~ "New User"
+      conn = put conn, user_path(conn, :update), user: @invalid_attrs
+      assert html_response(conn, 200) =~ "Profile"
     end
-  end
-
-  describe "edit user" do
-    setup [:create_user]
-
-    test "renders form for editing chosen user", %{conn: conn, user: user} do
-      conn = get conn, user_path(conn, :edit, user)
-      assert html_response(conn, 200) =~ "Edit User"
-    end
-  end
-
-  describe "update user" do
-    setup [:create_user]
-
-    test "redirects when data is valid", %{conn: conn, user: user} do
-      conn = put conn, user_path(conn, :update, user), user: @update_attrs
-      assert redirected_to(conn) == user_path(conn, :show, user)
-
-      conn = get conn, user_path(conn, :show, user)
-      assert html_response(conn, 200) =~ "some updated email"
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, user: user} do
-      conn = put conn, user_path(conn, :update, user), user: @invalid_attrs
-      assert html_response(conn, 200) =~ "Edit User"
-    end
-  end
-
-  describe "delete user" do
-    setup [:create_user]
-
-    test "deletes chosen user", %{conn: conn, user: user} do
-      conn = delete conn, user_path(conn, :delete, user)
-      assert redirected_to(conn) == user_path(conn, :index)
-      assert_error_sent 404, fn ->
-        get conn, user_path(conn, :show, user)
-      end
-    end
-  end
-
-  defp create_user(_) do
-    user = fixture(:user)
-    {:ok, user: user}
   end
 end

@@ -9,11 +9,11 @@ defmodule SensorNodes.Sensors do
   alias SensorNodes.Sensors.Node
 
   @doc """
-  Returns the list of nodes.
+  Returns the list of nodes from a given `user_id`.
 
   ## Examples
 
-      iex> list_nodes()
+      iex> list_nodes(user_id)
       [%Node{}, ...]
 
   """
@@ -40,8 +40,8 @@ defmodule SensorNodes.Sensors do
     Repo.one!(from n in Node, where: n.id == ^id and n.user_id == ^user_id)
   end
 
-  def get_node_by_uid(uid) do
-    Repo.get_by(Node, node_uid: uid)
+  def get_node_by_uid!(uid) do
+    Repo.get_by!(Node, node_uid: uid)
   end
 
   @doc """
@@ -112,11 +112,11 @@ defmodule SensorNodes.Sensors do
   alias SensorNodes.Sensors.Sensor
 
   @doc """
-  Returns the list of sensors.
+  Returns the list of sensors from given `user_id`.
 
   ## Examples
 
-      iex> list_sensors()
+      iex> list_sensors(user_id)
       [%Sensor{}, ...]
 
   """
@@ -124,21 +124,30 @@ defmodule SensorNodes.Sensors do
     Repo.all(from s in Sensor, where: s.user_id == ^user_id)
   end
 
+  @doc """
+  Returns the list of sensors from given `user_id` and `node_id`.
+
+  ## Examples
+
+      iex> list_sensors_by_node(user_id, node_id)
+      [%Sensor{}, ...]
+
+  """
   def list_sensors_by_node(user_id, node_id) do 
     Repo.all(from sensor in Sensor, where: sensor.user_id == ^user_id and sensor.node_id == ^node_id )
   end
 
   @doc """
-  Gets a single sensor.
+  Gets a single sensor from given `user_id`.
 
   Raises `Ecto.NoResultsError` if the Sensor does not exist.
 
   ## Examples
 
-      iex> get_sensor!(123)
+      iex> get_sensor!(user_id, 123)
       %Sensor{}
 
-      iex> get_sensor!(456)
+      iex> get_sensor!(user_id, 456)
       ** (Ecto.NoResultsError)
 
   """
@@ -146,9 +155,22 @@ defmodule SensorNodes.Sensors do
     Repo.one!(from s in Sensor, where: s.user_id == ^user_id and s.id == ^id)
   end
 
-  defp get_sensor_by_uid(uid) do
-    Repo.get_by(Sensor, sensor_uid: uid)
+  @doc """
+  Gets a single sensor from given `uid` and `user_id`.
+
+  ## Examples
+
+      iex> get_sensor_by_uid(uid)
+      %Sensor{}
+
+      iex> get_sensor_by_uid(uid)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def get_sensor_by_uid(user_id, uid) do
+    Repo.one(from s in Sensor, where: s.user_id == ^user_id and s.sensor_uid == ^uid)
   end
+
   @doc """
   Creates a sensor.
 
@@ -218,11 +240,11 @@ defmodule SensorNodes.Sensors do
   alias SensorNodes.Sensors.Reading
 
   @doc """
-  Returns the list of readings.
+  Returns the list of readings from a given `user_id`.
 
   ## Examples
 
-      iex> list_readings()
+      iex> list_readings(user_id)
       [%Reading{}, ...]
 
   """
@@ -230,10 +252,29 @@ defmodule SensorNodes.Sensors do
     Repo.all(from reading in Reading, where: reading.user_id == ^user_id, order_by: [desc: :inserted_at])
   end
 
+
+  @doc """
+  Returns the list of readings from given `user_id` and `sensor_id`.
+
+  ## Examples
+
+      iex> list_readings_by_sensor(user_id, sensor_id)
+      [%Reading{}, ...]
+
+  """
   def list_readings_by_sensor(user_id, sensor_id) do
     Repo.all(from reading in Reading, where: reading.user_id == ^user_id and reading.sensor_id == ^sensor_id, order_by: [desc: :inserted_at])
   end
 
+  @doc """
+  Returns the list of readings from given `user_id` and `node_id`.
+
+  ## Examples
+
+      iex> list_readings_by_node(user_id, node_id)
+      [%Reading{}, ...]
+
+  """
   def list_readings_by_node(user_id, node_id) do
     query = from reading in Reading, 
       join: sensor in Sensor,
@@ -280,48 +321,46 @@ defmodule SensorNodes.Sensors do
 
 
   defp get_sensor_or_create(sensor_uid, node_uid) do
-    sensor = get_sensor_by_uid(sensor_uid)
+    node = get_node_by_uid!(node_uid)
+
+    sensor = get_sensor_by_uid(node.user_id, sensor_uid)
     if sensor == nil do
-        node = get_node_by_uid(node_uid)
+        sensor_info = %{
+            :user_id => node.user_id,
+            :node_id => node.id,
+            :sensor_uid => sensor_uid,
+            :upper => 30,
+            :lower => 26,
+            :op_mode => "A"
+        }
 
-        if node != nil do
-            sensor_info = %{
-                :user_id => node.user_id,
-                :node_id => node.id,
-                :sensor_uid => sensor_uid,
-                :upper => 32,
-                :lower => 28,
-                :op_mode => "A"
-            }
-
-            sensor = create_sensor(sensor_info)
-        end
+        {:ok, sensor} = create_sensor(sensor_info)
+        sensor
+    else
+        sensor
     end
-        
-    sensor
   end
 
 
   def create_reading(node_id, _sensor_id, "id", reading) do
-    node = get_node_by_uid(node_id)
-    if node != nil do
-        info = Map.new Enum.map String.split(reading, ";"), fn(item) -> 
-            [key, value] = String.split(item, ":")
-            {key, value}
-        end
-    
-        sensor_info = %{
-            :lower => info["lower"],
-            :op_mode => info["op_mode"],
-            :relay_status => false,
-            :sensor_uid => info["id"],
-            :upper => :info["upper"],
-            :user_id => node.user_id,
-            :node_id => node.id
-        }
-        
-        create_sensor(sensor_info)
+    node = get_node_by_uid!(node_id)
+    info = Map.new Enum.map String.split(reading, ";"), fn(item) -> 
+        [key, value] = String.split(item, ":")
+        {key, value}
     end
+
+    sensor_info = %{
+        :lower => 26,
+        :op_mode => "A",
+        :relay_status => false,
+        :sensor_uid => info["id"],
+        :upper => 30,
+        :user_id => node.user_id,
+        :node_id => node.id
+    }
+    
+    create_sensor(sensor_info)
+    
   end
 
   def create_reading(node_id, sensor_id, "relay", reading) do
@@ -341,7 +380,9 @@ defmodule SensorNodes.Sensors do
             :sensor_id => sensor.id
         }
 
-        create_reading(reading_info)    
+        create_reading(reading_info)
+    else
+        {:error, nil}
     end
   end
 
@@ -360,6 +401,7 @@ defmodule SensorNodes.Sensors do
     end
   end
 
+  def trigger_mqtt_commands({:error, changeset}), do: {:error, changeset}
   def trigger_mqtt_commands({:ok, sensor}) do
     spawn(fn -> 
         SensorNodes.Mqtt.send_message(

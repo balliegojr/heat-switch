@@ -2,8 +2,6 @@ defmodule SensorNodesWeb.SensorController do
   use SensorNodesWeb, :controller
 
   alias SensorNodes.Sensors
-  alias SensorNodes.Sensors.Sensor
-
   require SensorNodesWeb.Gettext
 
   def index(conn, _params) do

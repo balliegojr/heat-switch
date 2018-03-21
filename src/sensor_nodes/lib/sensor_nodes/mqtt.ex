@@ -6,8 +6,11 @@ defmodule SensorNodes.Mqtt do
     
     def connect_and_subscribe() do
         {:ok, pid} = MqttClient.start_link(%{ parent: self() })
-        MqttClient.connect(pid, Application.get_env(:sensor_nodes, SensorNodes.Mqtt))
-        MqttClient.subscribe(pid, [topics: ["viper/node/+/sensor/#"], qoses: [0]])
+
+        if Application.get_env(:sensor_nodes, SensorNodes.Mqtt) != nil do
+            MqttClient.connect(pid, Application.get_env(:sensor_nodes, SensorNodes.Mqtt))
+            MqttClient.subscribe(pid, [topics: ["viper/node/+/sensor/#"], qoses: [0]])
+        end
 
         {:ok, pid}
     end
@@ -28,23 +31,30 @@ defmodule SensorNodes.Mqtt do
         end)
     end
 
+    
+    
     def send_message(node_id, sensor_id, "R", _values) do
-      topic(node_id, sensor_id)
+        topic(node_id, sensor_id)
         |> send_message("report")
     end
-
+    
     def send_message(node_id, sensor_id, "A", %{ upper: upper, lower: lower }) do
-      topic(node_id, sensor_id)
+        topic(node_id, sensor_id)
         |> send_message("automatic #{upper} #{lower}")
     end
-
+    
     def send_message(node_id, sensor_id, "O", %{ relay_status: relay_status }) do
-      message = case relay_status do
-          true -> "override relay on"
-          false -> "override relay off"
-      end
-      topic(node_id, sensor_id)
+        message = case relay_status do
+            true -> "override relay on"
+            false -> "override relay off"
+        end
+        topic(node_id, sensor_id)
         |> send_message(message)
-      
+        
     end
+
+    def send_message(_node_id, _sensor_id, _mode, _values) do
+        nil
+    end
+
 end
