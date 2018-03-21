@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <hr />
-                    <%= gettext "Don't have an account?" %><%= link gettext("Sign up"), to: page_path(@conn, :join) %>
+                    <%= gettext "Don't have an account?" %> &nbsp; <%= link gettext("Sign up"), to: page_path(@conn, :join) %>
                 </div>
             </div>
         </div>

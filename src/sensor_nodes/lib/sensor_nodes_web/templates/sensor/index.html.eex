@@ -1,5 +1,5 @@
 <h2><%= gettext "Sensors" %></h2>
-<span><%= "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller" %></span>
+<span><%= gettext "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller" %></span>
 
 <table class="table">
   <thead>

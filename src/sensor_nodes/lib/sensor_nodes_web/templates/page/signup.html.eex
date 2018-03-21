@@ -22,7 +22,7 @@
                 </div>
 
                  <div class="col-md-12">
-                    <%= text_input f, :password_confirmation, class: "form-control", type: :password, placeholder: gettext "Confirm Password" %>
+                    <%= text_input f, :password_confirmation, class: "form-control", type: :password, placeholder: gettext "Password confirmation" %>
                     <%= error_tag f, :password_confirmation %>
                 </div>
 
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <hr />
-                    <%= gettext "Already have an account?" %><%= link gettext("Sign in"), to: page_path(@conn, :login) %>
+                    <%= gettext "Already have an account?" %> <%= link gettext("Sign in"), to: page_path(@conn, :login) %>
                 </div>
             </div>
         </div>

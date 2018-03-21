@@ -2,4 +2,4 @@
 
 <%= render "form.html", Map.put(assigns, :action, user_path(@conn, :update)) %>
 
-<span><%= link "Back", to: user_path(@conn, :profile) %></span>
+<span><%= link gettext("Back"), to: user_path(@conn, :profile) %></span>

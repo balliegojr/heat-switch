@@ -1,0 +1,380 @@
+## `msgid`s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove `msgid`s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use `mix gettext.extract --merge` or `mix gettext.merge`
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:38
+msgid "Already have an account?"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:26
+msgid "Are you sure you want to delete this Node Controller?"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:22
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:26
+msgid "Automatic"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/edit.html.eex:5
+#: lib/sensor_nodes_web/templates/node/new.html.eex:5
+#: lib/sensor_nodes_web/templates/sensor/edit.html.eex:5
+msgid "Back"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:35
+msgid "Controllers"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:26
+msgid "Delete"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:34
+msgid "Don't have an account?"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:25
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:39
+#: lib/sensor_nodes_web/templates/user/show.html.eex:10
+msgid "Edit"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/edit.html.eex:1
+msgid "Edit Node Controller"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/edit.html.eex:1
+msgid "Edit Sensor"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:15
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:15
+#: lib/sensor_nodes_web/templates/user/form.html.eex:9
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes/accounts/user.ex:23
+msgid "Email already in use"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/index.html.eex:3
+msgid "Here you can register your node controllers and watch, in real time, the temperature of your controlled environments"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/form.html.eex:26
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:8
+msgid "Identification"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:4
+msgid "In this page you can manage your registered node controllers"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:2
+msgid "In this page you can see the readings of your sensors"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes/accounts/accounts.ex:122
+#: lib/sensor_nodes/accounts/accounts.ex:126
+msgid "Incorrect username or password"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/user-menu.html.eex:18
+msgid "Join"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:39
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:12
+msgid "Lower boundary"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:9
+msgid "Mode"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/form.html.eex:11
+#: lib/sensor_nodes_web/templates/node/index.html.eex:11
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:15
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:7
+msgid "Name"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:13
+msgid "New"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/new.html.eex:1
+msgid "New Node Controller"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/node_controller.ex:22
+msgid "Node controller created"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/node_controller.ex:53
+msgid "Node controller removed"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/node_controller.ex:41
+msgid "Node controller updated"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:1
+msgid "Node controllers"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:12
+msgid "Node identification"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:33
+msgid "Off"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:33
+msgid "On"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/form.html.eex:6
+msgid "Oops, something went wrong"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:4
+#: lib/sensor_nodes_web/templates/user/form.html.eex:4
+msgid "Oops, something went wrong."
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:21
+msgid "Operational Mode"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:22
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:28
+msgid "Override"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:20
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:20
+#: lib/sensor_nodes_web/templates/user/form.html.eex:15
+msgid "Password"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes/accounts/user.ex:22
+msgid "Password does not match"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/user-menu.html.eex:10
+#: lib/sensor_nodes_web/templates/user/edit.html.eex:1
+#: lib/sensor_nodes_web/templates/user/show.html.eex:1
+msgid "Profile"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:22
+msgid "Read only"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:27
+msgid "Reading Only"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:9
+msgid "Reading date"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:7
+msgid "Reading type"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:8
+msgid "Reading value"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:37
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:1
+msgid "Readings"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:27
+msgid "Relay status"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/form.html.eex:32
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:45
+#: lib/sensor_nodes_web/templates/user/form.html.eex:27
+msgid "Save"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/reading/index.html.eex:6
+msgid "Sensor"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:9
+msgid "Sensor Id"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/sensor_controller.ex:46
+msgid "Sensor deleted"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/sensor_controller.ex:34
+msgid "Sensor updated"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:36
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:1
+msgid "Sensors"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:24
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:38
+msgid "Show readings"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/index.html.eex:23
+msgid "Show sensors"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/user-menu.html.eex:19
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:27
+msgid "Sign In"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:31
+msgid "Sign Up"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:38
+msgid "Sign in"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/layout/user-menu.html.eex:11
+msgid "Sign out"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:34
+msgid "Sign up"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:10
+msgid "Status"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signin.html.eex:4
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:4
+msgid "TermoPower"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/node/form.html.eex:18
+msgid "To retrieve the Node Controller Id, execute the following command in your raspberry: "
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/form.html.eex:33
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:11
+msgid "Upper boundary"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/user_controller.ex:23
+msgid "User updated successfully."
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/page_controller.ex:56
+msgid "Welcome back!"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/index.html.eex:2
+msgid "Welcome to TermoPower online"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/controllers/page_controller.ex:33
+msgid "Welcome to TermoPower!"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes/auth/error_handler.ex:7
+msgid "You are not authorized to see this page"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/signup.html.eex:25
+#: lib/sensor_nodes_web/templates/user/form.html.eex:21
+msgid "Password confirmation"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/sensor/index.html.eex:2
+msgid "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller"
+msgstr ""
