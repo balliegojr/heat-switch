@@ -9,4 +9,7 @@ defmodule SensorNodesWeb.ViewHelpers do
         Guardian.Plug.current_resource(conn)
     end
 
+    def locale(conn) do
+        conn.params["locale"] || Plug.Conn.get_session(conn, :locale)
+    end
 end

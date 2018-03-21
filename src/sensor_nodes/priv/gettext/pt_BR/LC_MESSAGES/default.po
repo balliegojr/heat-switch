@@ -244,7 +244,7 @@ msgstr "Valor"
 #: lib/sensor_nodes_web/templates/layout/app.html.eex:37
 #: lib/sensor_nodes_web/templates/reading/index.html.eex:1
 msgid "Readings"
-msgstr "Valores"
+msgstr "Leituras"
 
 #, elixir-format
 #: lib/sensor_nodes_web/templates/sensor/form.html.eex:27

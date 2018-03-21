@@ -24,7 +24,21 @@
               <span class="icon-bar"></span>
             </button> %>
             <%= link "", to: page_path(@conn, :index), class: "navbar-brand fa fa-home" %>
+
           </div>
+
+          <ul class="nav navbar-nav">
+            <%= if locale(@conn) != "en" do %>  
+              <li><%= link :English, to: [@conn.request_path,  "?locale=en"] %></li>
+            <% end %>
+            
+            <%= if locale(@conn) != "pt_BR" do %>  
+              <li><%= link :Português, to: [@conn.request_path, "?locale=pt_BR"] %></li>
+            <% end %>
+            
+          </ul>
+          
+
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse text-center" id="bs-example-navbar-collapse-1">

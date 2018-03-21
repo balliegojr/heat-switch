@@ -5,3 +5,7 @@
     float: none !important;
     display: inline-block;
 }
+
+.navbar-brand.fa-home {
+    font-size: 200%
+}
