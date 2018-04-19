@@ -3,6 +3,7 @@ defmodule SensorNodesWeb.PageController do
   alias SensorNodes.Accounts
   alias SensorNodes.Accounts.User
   alias SensorNodes.Auth.Guardian
+  alias SensorNodes.Sensors
 
   def index(conn, _params) do
     render conn, "index.html"
@@ -56,5 +57,11 @@ defmodule SensorNodesWeb.PageController do
     |> put_flash(:success, gettext("Welcome back!"))
     |> Guardian.Plug.sign_in(user)
     |> redirect(to: node_path(conn, :index))
+  end
+
+  def dashboard(conn, _) do
+    sensors = Sensors.list_sensors(Guardian.Plug.current_resource(conn).id)
+    
+    render(conn, "dashboard.html", sensors: sensors)
   end
 end

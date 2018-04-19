@@ -31,11 +31,12 @@ msgstr "Automático"
 #: lib/sensor_nodes_web/templates/node/edit.html.eex:5
 #: lib/sensor_nodes_web/templates/node/new.html.eex:5
 #: lib/sensor_nodes_web/templates/sensor/edit.html.eex:5
+#: lib/sensor_nodes_web/templates/user/edit.html.eex:5
 msgid "Back"
 msgstr "Voltar"
 
 #, elixir-format
-#: lib/sensor_nodes_web/templates/layout/app.html.eex:35
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:53
 msgid "Controllers"
 msgstr "Controladores"
 
@@ -241,7 +242,7 @@ msgid "Reading value"
 msgstr "Valor"
 
 #, elixir-format
-#: lib/sensor_nodes_web/templates/layout/app.html.eex:37
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:55
 #: lib/sensor_nodes_web/templates/reading/index.html.eex:1
 msgid "Readings"
 msgstr "Leituras"
@@ -279,7 +280,7 @@ msgid "Sensor updated"
 msgstr "Sensor atualizado"
 
 #, elixir-format
-#: lib/sensor_nodes_web/templates/layout/app.html.eex:36
+#: lib/sensor_nodes_web/templates/layout/app.html.eex:54
 #: lib/sensor_nodes_web/templates/sensor/index.html.eex:1
 msgid "Sensors"
 msgstr "Sensores"
@@ -349,7 +350,7 @@ msgid "User updated successfully."
 msgstr "Perfil atualizado com sucesso"
 
 #, elixir-format
-#: lib/sensor_nodes_web/controllers/page_controller.ex:56
+#: lib/sensor_nodes_web/controllers/page_controller.ex:57
 msgid "Welcome back!"
 msgstr "Bem vindo de volta"
 
@@ -359,7 +360,7 @@ msgid "Welcome to TermoPower online"
 msgstr "Bem vindo ao TermoPower online"
 
 #, elixir-format
-#: lib/sensor_nodes_web/controllers/page_controller.ex:33
+#: lib/sensor_nodes_web/controllers/page_controller.ex:34
 msgid "Welcome to TermoPower!"
 msgstr "Bem vindo ao TermoPower!"
 
@@ -378,3 +379,13 @@ msgstr "Confirmação de senha"
 #: lib/sensor_nodes_web/templates/sensor/index.html.eex:2
 msgid "In this page you can view and manage your sensors. They will appear here as soon as they become active in the node controller"
 msgstr "Nesta página você pode ver e gerênciar seus sensores. Eles aparecerão aqui no momento que forem ativados no nó controlador"
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/dashboard.html.eex:1
+msgid "Dashboard"
+msgstr ""
+
+#, elixir-format
+#: lib/sensor_nodes_web/templates/page/dashboard.html.eex:2
+msgid "Monitor selected sensors in real time"
+msgstr "Monitore os sensores em tempo real"

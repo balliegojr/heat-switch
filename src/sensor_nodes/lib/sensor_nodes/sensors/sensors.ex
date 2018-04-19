@@ -187,6 +187,7 @@ defmodule SensorNodes.Sensors do
     %Sensor{}
     |> Sensor.changeset(attrs)
     |> Repo.insert()
+    |> notify_dashboard()
   end
 
   @doc """
@@ -205,6 +206,7 @@ defmodule SensorNodes.Sensors do
     sensor
     |> Sensor.changeset(attrs)
     |> Repo.update()
+    |> notify()
     |> trigger_mqtt_commands()
   end
 
@@ -317,8 +319,21 @@ defmodule SensorNodes.Sensors do
     %Reading{}
     |> Reading.changeset(attrs)
     |> Repo.insert()
+    |> notify()
+    
   end
-
+  defp notify({:ok, %SensorNodes.Sensors.Reading{} = reading}) do
+    SensorNodesWeb.Endpoint.broadcast("sensor:#{reading.sensor_id}", "sensor_reading", Map.delete(reading, :__meta__))
+    {:ok, reading}
+  end
+  defp notify({:ok, %SensorNodes.Sensors.Sensor{} = sensor}) do
+    SensorNodesWeb.Endpoint.broadcast("sensor:#{sensor.id}", "sensor_update", Map.delete(sensor, :__meta__))
+    {:ok, sensor}
+  end
+  defp notify_dashboard({:ok, %SensorNodes.Sensors.Sensor{} = sensor}) do
+    SensorNodesWeb.Endpoint.broadcast("dashboard:#{sensor.user_id}", "sensor_new", Map.delete(sensor, :__meta__))
+    {:ok, sensor}
+  end
 
   defp get_sensor_or_create(sensor_uid, node_uid) do
     node = get_node_by_uid!(node_uid)
@@ -371,7 +386,8 @@ defmodule SensorNodes.Sensors do
             "off" -> Sensor.changeset(sensor, %{ :relay_status => false })
         end
 
-        Repo.update(changeset)
+        notify(Repo.update(changeset))
+
         reading_info = %{
             :sensor_uid => sensor_id,
             :type => "relay",

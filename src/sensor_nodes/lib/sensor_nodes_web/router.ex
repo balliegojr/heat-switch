@@ -1,6 +1,15 @@
 defmodule SensorNodesWeb.Router do
   use SensorNodesWeb, :router
 
+  defp put_user_token(conn, _) do
+    if current_user = Guardian.Plug.current_resource(conn) do
+      token = Phoenix.Token.sign(conn, "user socket", current_user.id)
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -12,6 +21,7 @@ defmodule SensorNodesWeb.Router do
 
   pipeline :auth do
     plug SensorNodes.Auth.Pipeline
+    plug :put_user_token
   end
   
   pipeline :ensure_auth do
@@ -20,7 +30,6 @@ defmodule SensorNodesWeb.Router do
 
   pipeline :ensure_not_auth do 
     plug Guardian.Plug.EnsureNotAuthenticated
-
   end
 
   scope "/", SensorNodesWeb do
@@ -43,6 +52,7 @@ defmodule SensorNodesWeb.Router do
   scope "/", SensorNodesWeb do
     pipe_through [:browser, :auth, :ensure_auth] # Use the default browser stack
     
+    get "/dashboard", PageController, :dashboard
     get "/signout", PageController, :signout
     get "/profile", UserController, :profile
     get "/editprofile", UserController, :edit_profile

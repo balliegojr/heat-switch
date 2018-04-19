@@ -23,7 +23,11 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button> %>
-            <%= link "", to: page_path(@conn, :index), class: "navbar-brand fa fa-home" %>
+            <%= if authenticated?(@conn) do %>
+              <%= link "", to: page_path(@conn, :dashboard), class: "navbar-brand fa fa-home" %>
+            <% else %>
+              <%= link "", to: page_path(@conn, :index), class: "navbar-brand fa fa-home" %>
+            <% end %>
 
           </div>
 

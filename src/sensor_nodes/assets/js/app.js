@@ -13,10 +13,25 @@
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
 import "bootstrap3"
+import { Dashboard } from "./containers/dashboard"
+import React from "react"
+import ReactDOM from "react-dom"
 
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
+import socket from "./socket"
 
-// import socket from "./socket"
+function init_dashboard() {
+    socket.init();
+
+    ReactDOM.render(
+        <Dashboard sensors={window.initial_state.sensors} />,
+        document.getElementById("dashboard_content")
+    )
+}
+
+if (window.initial_state) {
+    init_dashboard();
+}

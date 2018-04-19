@@ -9,3 +9,35 @@
 .navbar-brand.fa-home {
     font-size: 200%
 }
+
+
+.sensor {
+    border: solid 1px lightgreen;
+    padding: 10px;
+    margin: 5px;
+
+    background: lightgreen;
+}
+
+.sensor hr {
+    margin-top: 2px;
+}
+
+.sensor .status, .sensor .value  {
+    font-size: 20px;
+}
+
+
+.sensor.above {
+    border-color: lightcoral;
+    background: lightcoral;
+}
+
+.sensor.bellow {
+    border-color: lightblue;
+    background: lightblue;
+}
+
+.sensor.override {
+    border: dashed 3px darkgoldenrod;
+}
